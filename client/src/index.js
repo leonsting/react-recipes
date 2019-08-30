@@ -2,8 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
+import Navbar from "./components/Navbar";
 import Signin from "./components/Auth/Signin";
 import Signup from "./components/Auth/Signup";
+import Search from "./components/Recipe/Search";
+import AddRecipe from "./components/Recipe/AddRecipe";
+import Profile from "./components/Profile/Profile";
 import withSession from "./components/withSession";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
@@ -33,13 +37,27 @@ const client = new ApolloClient({
 
 const Root = ({ refetch }) => (
   <BrowserRouter>
-    <Switch>
-      <Route path="/" component={App} exact />
-      {/* Using render prop instead of component prop to assign props for component */}
-      <Route path="/signin" render={() => <Signin refetch={refetch} />} exact />
-      <Route path="/signup" render={() => <Signup refetch={refetch} />} exact />
-      <Redirect to="/" />
-    </Switch>
+    <>
+      <Navbar />
+      <Switch>
+        <Route path="/" component={App} exact />
+        <Route path="/search" component={Search} exact />
+        <Route path="/recipe/add" component={AddRecipe} exact />
+        <Route path="/profile" component={Profile} exact />
+        {/* Using render prop instead of component prop to assign props for component */}
+        <Route
+          path="/signin"
+          render={() => <Signin refetch={refetch} />}
+          exact
+        />
+        <Route
+          path="/signup"
+          render={() => <Signup refetch={refetch} />}
+          exact
+        />
+        <Redirect to="/" />
+      </Switch>
+    </>
   </BrowserRouter>
 );
 
