@@ -1,42 +1,50 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ session }) => {
   return (
     <nav>
-      <NavbarUnAuth />
-      <NavbarAuth />
+      {session && session.getCurrentUser ? (
+        <NavbarAuth session={session} />
+      ) : (
+        <NavbarUnAuth />
+      )}
     </nav>
   );
 };
 
-const NavbarAuth = () => {
+const NavbarAuth = ({ session }) => {
   return (
-    <ul>
-      <li>
-        <NavLink to="/" exact>
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/search" exact>
-          Search
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/recipe/add" exact>
-          Add Recipe
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/profile" exact>
-          Profile
-        </NavLink>
-      </li>
-      <li>
-        <button>SIGNOUT</button>
-      </li>
-    </ul>
+    <>
+      <ul>
+        <li>
+          <NavLink to="/" exact>
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/search" exact>
+            Search
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/recipe/add" exact>
+            Add Recipe
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile" exact>
+            Profile
+          </NavLink>
+        </li>
+        <li>
+          <button>SIGNOUT</button>
+        </li>
+      </ul>
+      <h4>
+        Welcome, <strong>{session.getCurrentUser.username}</strong>
+      </h4>
+    </>
   );
 };
 

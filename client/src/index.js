@@ -35,10 +35,10 @@ const client = new ApolloClient({
   }
 });
 
-const Root = ({ refetch }) => (
+const Root = ({ refetch, session }) => (
   <BrowserRouter>
     <>
-      <Navbar />
+      <Navbar session={session} />
       <Switch>
         <Route path="/" component={App} exact />
         <Route path="/search" component={Search} exact />

@@ -11,7 +11,7 @@ const withSession = Component => props => {
         }
         console.log("withSession", data);
         // Using refetch to call query execute again
-        return <Component {...props} refetch={refetch} />;
+        return <Component {...props} refetch={refetch} session={data} />;
       }}
     </Query>
   );
