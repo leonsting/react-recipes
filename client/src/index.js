@@ -7,6 +7,7 @@ import Signin from "./components/Auth/Signin";
 import Signup from "./components/Auth/Signup";
 import Search from "./components/Recipe/Search";
 import AddRecipe from "./components/Recipe/AddRecipe";
+import RecipePage from "./components/Recipe/RecipePage";
 import Profile from "./components/Profile/Profile";
 import withSession from "./components/withSession";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -43,6 +44,7 @@ const Root = ({ refetch, session }) => (
         <Route path="/" component={App} exact />
         <Route path="/search" component={Search} exact />
         <Route path="/recipe/add" component={AddRecipe} exact />
+        <Route path="/recipes/:_id" component={RecipePage} />
         <Route path="/profile" component={Profile} exact />
         {/* Using render prop instead of component prop to assign props for component */}
         <Route

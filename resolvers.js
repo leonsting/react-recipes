@@ -31,6 +31,11 @@ exports.resolvers = {
       //   username: currentUser.username
       // }).populate({ path: "favorites", model: "Recipe" });
       return user;
+    },
+    getRecipe: async (parent, args, { Recipe }) => {
+      const { _id } = args;
+      const recipe = await Recipe.findOne({ _id });
+      return recipe;
     }
   },
   Mutation: {
