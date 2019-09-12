@@ -46,11 +46,11 @@ app.use(cors(corsOptions));
 // Setup JWT authentication middleware
 app.use(async (req, res, next) => {
   const token = req.headers["authorization"];
-  console.log(token, typeof token);
+  // console.log(token, typeof token);
   if (token !== "null") {
     try {
       const currentUser = await jwt.verify(token, process.env.SECRET);
-      console.log(currentUser);
+      // console.log(currentUser);
       // Assign current user in to request
       req.currentUser = currentUser;
     } catch (error) {

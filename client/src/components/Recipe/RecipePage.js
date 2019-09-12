@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { Query } from "react-apollo";
 import Error from "../Error";
 import { GET_RECIPE } from "../../queries";
+import LikeRecipe from "./LikeRecipe";
 
 const RecipePage = ({ match }) => {
   const { _id } = match.params;
@@ -24,6 +25,7 @@ const RecipePage = ({ match }) => {
           description,
           likes
         } = data.getRecipe;
+        console.log("RecipePage", data.getRecipe);
         return (
           <div className="App">
             <h4>{name}</h4>
@@ -32,7 +34,7 @@ const RecipePage = ({ match }) => {
             <p>Description: {description}</p>
             <p>Likes : {likes}</p>
             <p>Create by : {username}</p>
-            <button>Like</button>
+            <LikeRecipe _id={_id} />
           </div>
         );
       }}

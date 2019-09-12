@@ -17,7 +17,9 @@ exports.resolvers = {
   },
   Query: {
     getAllRecipes: async (root, args, { Recipe }) => {
-      const allRecipe = await Recipe.find();
+      const allRecipe = await Recipe.find().sort({
+        createdDate: "desc"
+      });
       return allRecipe;
     },
     getCurrentUser: async (root, args, { currentUser, User }) => {
@@ -36,6 +38,30 @@ exports.resolvers = {
       const { _id } = args;
       const recipe = await Recipe.findOne({ _id });
       return recipe;
+    },
+    search: async (parent, { searchTerm }, { Recipe }) => {
+      if (searchTerm) {
+        // console.log("searchTerm", searchTerm);
+        const searchResults = await Recipe.find(
+          {
+            $text: { $search: searchTerm }
+          },
+          { score: { $meta: "textScore" } }
+        ).sort({
+          score: { $meta: "textScore" }
+        });
+        return searchResults;
+      } else {
+        return await Recipe.find().sort({
+          createdDate: "desc"
+        });
+      }
+    },
+    getUserRecipes: async (parent, { username }, { Recipe }) => {
+      const recipes = await Recipe.find({ username }).sort({
+        createdDate: "desc"
+      });
+      return recipes;
     }
   },
   Mutation: {
@@ -51,6 +77,36 @@ exports.resolvers = {
       }).save();
       console.log("new", newRecipe);
       return newRecipe;
+    },
+
+    likeRecipe: async (parent, { _id, username }, { User, Recipe }) => {
+      const recipe = await Recipe.findOneAndUpdate(
+        { _id },
+        { $inc: { likes: 1 } }
+      );
+      await User.findOneAndUpdate(
+        { username },
+        {
+          $addToSet: { favorites: _id }
+        }
+      );
+      return recipe;
+    },
+
+    unlikeRecipe: async (parent, { _id, username }, { User, Recipe }) => {
+      const recipe = await Recipe.findOneAndUpdate(
+        { _id },
+        { $inc: { likes: -1 } }
+      );
+      await User.findOneAndUpdate({ username }, { $pull: { favorites: _id } });
+      return recipe;
+    },
+
+    deleteRecipe: async (root, { _id }, { Recipe }) => {
+      const recipe = await Recipe.findOneAndRemove({
+        _id
+      });
+      return recipe;
     },
     signinUser: async (root, { username, password }, { User }) => {
       const user = await User.findOne({ username });

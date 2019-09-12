@@ -10,6 +10,7 @@ import AddRecipe from "./components/Recipe/AddRecipe";
 import RecipePage from "./components/Recipe/RecipePage";
 import Profile from "./components/Profile/Profile";
 import withSession from "./components/withSession";
+import withAuth from "./components/withAuth";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
@@ -36,6 +37,10 @@ const client = new ApolloClient({
   }
 });
 
+const conditionFun = session => {
+  return session && session.getCurrentUser;
+};
+
 const Root = ({ refetch, session }) => (
   <BrowserRouter>
     <>
@@ -43,9 +48,19 @@ const Root = ({ refetch, session }) => (
       <Switch>
         <Route path="/" component={App} exact />
         <Route path="/search" component={Search} exact />
-        <Route path="/recipe/add" component={AddRecipe} exact />
+        <Route
+          path="/recipe/add"
+          // render={() => <AddRecipe session={session} />}
+          component={withAuth(conditionFun, session)(AddRecipe)}
+          exact
+        />
         <Route path="/recipes/:_id" component={RecipePage} />
-        <Route path="/profile" component={Profile} exact />
+        <Route
+          path="/profile"
+          // render={() => <Profile session={session} />}
+          component={withAuth(conditionFun, session)(Profile)}
+          exact
+        />
         {/* Using render prop instead of component prop to assign props for component */}
         <Route
           path="/signin"
