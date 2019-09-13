@@ -8,6 +8,7 @@ import {
 } from "../../queries";
 import { Link } from "react-router-dom";
 import Error from "../Error";
+import Spinner from "../Spinner";
 
 const handleDeleteRecipe = deleteRecipe => event => {
   const confirmDelete = window.confirm("Are u sure to delete this Recipe ?");
@@ -28,7 +29,7 @@ const UserRecipes = ({
       <h3>Your recipes</h3>
       <Query query={GET_USER_RECIPES} variables={{ username }}>
         {({ data, loading, error }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Spinner />;
           if (error) return <Error error={error} />;
           return (
             <ul>

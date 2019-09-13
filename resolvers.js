@@ -66,10 +66,18 @@ exports.resolvers = {
   },
   Mutation: {
     addRecipe: async (parent, args, context) => {
-      const { name, category, description, instructions, username } = args;
+      const {
+        name,
+        imageUrl,
+        category,
+        description,
+        instructions,
+        username
+      } = args;
       const { Recipe } = context;
       const newRecipe = await new Recipe({
         name,
+        imageUrl,
         category,
         description,
         instructions,

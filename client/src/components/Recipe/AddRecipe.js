@@ -3,9 +3,11 @@ import { Mutation } from "react-apollo";
 import Error from "../Error";
 import { ADD_RECIPE, GET_ALL_RECIPES, GET_USER_RECIPES } from "../../queries";
 import { withRouter } from "react-router-dom";
+import CKEditor from "react-ckeditor-component";
 
 const initialState = {
   name: "",
+  imageUrl: "",
   category: "Breakfast",
   description: "",
   instructions: "",
@@ -25,6 +27,13 @@ class AddRecipe extends React.Component {
     });
   };
 
+  handleEditorChange = event => {
+    const newContent = event.editor.getData();
+    this.setState({
+      instructions: newContent
+    });
+  };
+
   handleSubmit = addRecipe => event => {
     event.preventDefault();
     addRecipe().then(data => {
@@ -35,8 +44,8 @@ class AddRecipe extends React.Component {
   };
 
   validateForm = () => {
-    const { name, category, description, instructions } = this.state;
-    return !name || !category || !description || !instructions;
+    const { name, imageUrl, category, description, instructions } = this.state;
+    return !name || !imageUrl || !category || !description || !instructions;
   };
 
   componentDidMount() {
@@ -79,7 +88,7 @@ class AddRecipe extends React.Component {
   };
 
   render() {
-    const { name, category, description, instructions } = this.state;
+    const { name, imageUrl, category, description, instructions } = this.state;
     return (
       <div className="App">
         <h2>Add Recipe</h2>
@@ -103,6 +112,13 @@ class AddRecipe extends React.Component {
                 onChange={this.handleChange}
                 value={name}
               />
+              <input
+                type="text"
+                name="imageUrl"
+                placeholder="Add recipe image url"
+                onChange={this.handleChange}
+                value={imageUrl}
+              />
               <select
                 name="category"
                 onChange={this.handleChange}
@@ -120,14 +136,22 @@ class AddRecipe extends React.Component {
                 onChange={this.handleChange}
                 value={description}
               />
-              <textarea
+              <label htmlFor="instructions">Instruction</label>
+              <CKEditor
+                name="instructions"
+                content={instructions}
+                events={{
+                  change: this.handleEditorChange
+                }}
+              />
+              {/* <textarea
                 name="instructions"
                 cols="30"
                 rows="10"
                 placeholder="Add instructions"
                 onChange={this.handleChange}
                 value={instructions}
-              ></textarea>
+              ></textarea> */}
               <button
                 disabled={loading || this.validateForm()}
                 type="submit"

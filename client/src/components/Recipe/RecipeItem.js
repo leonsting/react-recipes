@@ -1,17 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import posed from "react-pose";
 
-const RecipeItem = ({ _id, name, category }) => {
+const RecipeItem = posed.li({
+  shown: {
+    opacity: 1
+  },
+  hidden: {
+    opacity: 0
+  }
+});
+
+export default ({ _id, imageUrl, name, category }) => {
   return (
-    <li>
-      <Link to={`/recipes/${_id}`}>
-        <h4>{name}</h4>
-      </Link>
-      <p>
-        <strong>{category}</strong>
-      </p>
-    </li>
+    <RecipeItem
+      className="card"
+      style={{ background: `url(${imageUrl}) center center / cover no-repeat` }}
+    >
+      <span className={category}>{category}</span>
+      <div className="card-text">
+        <Link to={`/recipes/${_id}`}>
+          <h4>{name}</h4>
+        </Link>
+      </div>
+    </RecipeItem>
   );
 };
-
-export default RecipeItem;

@@ -29,6 +29,7 @@ class Search extends React.Component {
             <div className="App">
               <input
                 type="text"
+                className="search"
                 name="searchTerm"
                 placeholder="Input here to search"
                 onChange={this.handleSearch(client)}
